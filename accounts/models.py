@@ -1,3 +1,7 @@
+from django.contrib.auth.models import AbstractUser
+
 from django.db import models
 
-# Create your models here.
+
+class CustomUser(AbstractUser):
+    premium = models.BooleanField(default=False, help_text="Is user premium?")
