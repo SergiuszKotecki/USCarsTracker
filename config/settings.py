@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     # local
     'accounts.apps.AccountsConfig',
     'car.apps.CarConfig',
+    # 3rd party apps
+    'django_apscheduler',
 ]
 
+SCHEDULER_AUTOSTART = True
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
