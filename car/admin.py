@@ -2,9 +2,10 @@ from django.contrib import admin
 
 # Register your models here.
 from car import models
+from car.models import CopartCarAuction
 
 
-class CarAdmin(admin.ModelAdmin):
+class AuctionCarAdmin(admin.ModelAdmin):
     list_display = [
         "make",
         "model",
@@ -12,10 +13,11 @@ class CarAdmin(admin.ModelAdmin):
         "odometer_mi",
         "odometer_km",
         "run_and_drive",
+        "loot_id",
     ]
     list_filter = ("make", "model")
 
 
-admin.site.register(models.Car, CarAdmin)
-admin.site.register(models.CopartCar, CarAdmin)
-admin.site.register(models.IAAICar, CarAdmin)
+admin.site.register(models.CopartCar, AuctionCarAdmin)
+admin.site.register(models.IAAICar, AuctionCarAdmin)
+admin.site.register(CopartCarAuction)
