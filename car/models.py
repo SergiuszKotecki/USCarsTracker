@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-# Create your models here.
 
 
 def mi_to_km(mi):
@@ -16,33 +15,41 @@ class Car(models.Model):
         RED = 'RD', _('Red')
         BLUE = 'BE', _('Blue')
 
-    VIN = models.CharField(max_length=17)
+    VIN = models.CharField(max_length=17, blank=True, null=True)
     odometer_mi = models.IntegerField(blank=True, null=True)
     odometer_km = models.IntegerField(blank=True, null=True)
     run_and_drive = models.BooleanField(default=False)
     year = models.IntegerField(default=2000, blank=False, null=False)
-    make = models.CharField(max_length=20, blank=False, null=False)
-    model = models.CharField(max_length=20, blank=False, null=False)
+    make = models.CharField(max_length=20, blank=True, null=True)
+    model = models.CharField(max_length=20, blank=True, null=True)
     color = models.CharField(choices=ColorChoice.choices, default=ColorChoice.BLACK, max_length=2)
 
-    def save(self, *args, **kwargs):
-        if not self.odometer_km:
-            self.odometer_km = mi_to_km(self.odometer_mi)
-        super(Car, self).save(*args, **kwargs)
+    def mi_to_km(self):
+        self.odometer_km = int(self.odometer_mi * 1.609344)
 
     def __str__(self):
         return f"{self.make} {self.model} {self.VIN}"
 
 
 class CopartCar(Car):
-    loot_id = models.IntegerField(blank=False, null=False)
+    loot_id = models.IntegerField(blank=False, null=False, unique=True)
 
 
 class IAAICar(Car):
-    loot_id = models.CharField(max_length=20, blank=False, null=False)
+    loot_id = models.CharField(max_length=20, blank=False, null=False, unique=True)
 
 
-class CarAuction(models.Model):
+class CopartCarAuction(models.Model):
     current_bid = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True, null=True)
     buy_now = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True, null=True)
     last_update = models.DateTimeField(auto_now=False, blank=True, null=True)
+    auction_date = models.DateTimeField(auto_now=False, blank=True, null=True)
+    car = models.ForeignKey(CopartCar, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.car} {self.auction_date}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['car', 'auction_date'], name='Uniqe car and auction date'),
+        ]
