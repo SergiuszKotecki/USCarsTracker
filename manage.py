@@ -3,6 +3,8 @@
 import os
 import sys
 
+from config.settings import SCHEDULER_AUTOSTART
+
 
 def main():
     """Run administrative tasks."""

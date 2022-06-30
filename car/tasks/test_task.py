@@ -4,7 +4,7 @@ from django_apscheduler import util
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
-from car.models import CopartCar
+from car.models import Car
 from car.models import CopartCarAuction
 from car.tasks.CopartScrapper import read_car_data
 
@@ -22,13 +22,8 @@ def delete_old_job_executions(max_age=304_800):
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
 
 
-# @sync_to_async
-def async_copart_updater():
-    copart_cars = CopartCar.objects.all()
-
-
 def copart_cart_updater():
-    copart_cars = CopartCar.objects.all()
+    copart_cars = Car.objects.all()
     for car in copart_cars:
         copart_car_data = read_car_data(car.loot_id)
         car.VIN = copart_car_data['VIN']
@@ -52,22 +47,6 @@ def copart_cart_updater():
 def start_aps():
     scheduler = BackgroundScheduler()
     scheduler.add_jobstore(jobstore=DjangoJobStore())
-
-    scheduler.add_job(copart_cart_updater,
-                      trigger=CronTrigger(second="*/59"),
-                      name="Copart_cart_updater",
-                      id="Copart_cart_updater",
-                      replace_existing=True,
-                      max_instances=1
-                      )
-
-    scheduler.add_job(async_copart_updater,
-                      trigger=CronTrigger(second="*/30"),
-                      name="Async_Copart_cart_updater",
-                      id="Async_Copart_cart_updater",
-                      replace_existing=True,
-                      max_instances=1
-                      )
 
     scheduler.add_job(delete_old_job_executions,
                       trigger=CronTrigger(
