@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'subscription.apps.SubscriptionConfig',
     # 3rd party apps
     'django_apscheduler',
+    'django_extensions',
 ]
 
 SCHEDULER_AUTOSTART = True

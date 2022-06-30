@@ -10,6 +10,7 @@ django-apscheduler = "==0.6.2"
 aiohttp = "*"
 aiodns = "*"
 cchardet = "*"
+django-extensions = "==3.1.5"
 
 [dev-packages]
 
