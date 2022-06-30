@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # local
     'accounts.apps.AccountsConfig',
     'car.apps.CarConfig',
+    'subscription.apps.SubscriptionConfig',
     # 3rd party apps
     'django_apscheduler',
 ]
