@@ -11,6 +11,7 @@ aiohttp = "*"
 aiodns = "*"
 cchardet = "*"
 django-extensions = "==3.1.5"
+pydot = "*"
 
 [dev-packages]
 
