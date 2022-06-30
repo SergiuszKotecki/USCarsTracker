@@ -82,7 +82,6 @@ async def async_get_car_data(session: aiohttp.ClientSession, loot_id):
     counter = 0
     url = f"https://www.copart.com/public/data/lotdetails/solr/{loot_id}"
 
-
     try:
         async with session.get(url, headers=headers) as response:
             car = await response.json(encoding="UTF-8")
@@ -123,6 +122,3 @@ async def copart_scrapper(loop):
 def run_async_scrapper():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(copart_scrapper(loop))
-
-
-run_async_scrapper()

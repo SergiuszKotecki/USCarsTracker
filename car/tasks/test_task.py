@@ -21,13 +21,10 @@ def delete_old_job_executions(max_age=304_800):
     """
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
 
+
 # @sync_to_async
 def async_copart_updater():
-    print("Start run_async_scrapper()")
-    # run_async_scrapper()
     copart_cars = CopartCar.objects.all()
-    print([car.loot_id for car in copart_cars])
-    print("End run_async_scrapper()")
 
 
 def copart_cart_updater():
