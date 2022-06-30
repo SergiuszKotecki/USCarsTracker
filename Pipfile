@@ -7,6 +7,9 @@ name = "pypi"
 django = "==4.0.5"
 requests = "==2.28.0"
 django-apscheduler = "==0.6.2"
+aiohttp = "*"
+aiodns = "*"
+cchardet = "*"
 
 [dev-packages]
 
