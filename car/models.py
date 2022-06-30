@@ -2,12 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-
-
-def mi_to_km(mi):
-    return int(mi * 1.609344)
-
-
 class Car(models.Model):
     class ColorChoice(models.TextChoices):
         BLACK = 'BK', _('Black')
@@ -31,20 +25,19 @@ class Car(models.Model):
         return f"{self.make} {self.model} {self.VIN}"
 
 
-class CopartCar(Car):
-    loot_id = models.IntegerField(blank=False, null=False, unique=True)
-
-
-class IAAICar(Car):
-    loot_id = models.CharField(max_length=20, blank=False, null=False, unique=True)
-
-
 class CopartCarAuction(models.Model):
     current_bid = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True, null=True)
     buy_now = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True, null=True)
-    last_update = models.DateTimeField(auto_now=False, blank=True, null=True)
+    last_update = models.DateTimeField(auto_now=False, blank=True, null=True)  # last update for copart data
     auction_date = models.DateTimeField(auto_now=False, blank=True, null=True)
-    car = models.ForeignKey(CopartCar, on_delete=models.CASCADE)
+    loot_id = models.CharField(max_length=20, blank=False, null=False, unique=True)
+
+    refresh_data = models.BooleanField(default=True)
+
+    last_updated = models.DateTimeField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.car} {self.auction_date}"

@@ -18,6 +18,4 @@ class AuctionCarAdmin(admin.ModelAdmin):
     list_filter = ("make", "model")
 
 
-admin.site.register(models.CopartCar, AuctionCarAdmin)
-admin.site.register(models.IAAICar, AuctionCarAdmin)
 admin.site.register(CopartCarAuction)
